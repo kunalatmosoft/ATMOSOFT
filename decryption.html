@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encryption Project - Decryption</title>
+    <style>
+        body {
+            background-image: conic-gradient(from 0deg, orange, orangered, orange);
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            align-items: center;
+            text-align: center;
+        }
+
+        .form__group_one {
+  position: relative;
+}
+
+.form__group_oneform__field {
+  border: 1px solid silver !important;
+  border-radius: 5px;
+  box-sizing: border-box;
+  color: #0b2447;
+  height: 100px;
+  width: 500px;
+  padding: 0rem 15px;
+  box-shadow: 5px 5px 0 0;
+}
+
+.form__group_oneform__field::placeholder {
+  color: transparent;
+}
+
+.form__group_oneform__field:placeholder-shown ~ .form__group_oneform__label {
+  top: 10px;
+  border-right: none;
+  border-left: none;
+}
+
+.form__group_oneform__label {
+  background-color: white;
+  border-left: 1px solid silver;
+  border-right: 1px solid silver;
+  color: #9b9b9b;
+  display:flex;
+  font-size: 1.0em;
+  margin-left: 10px;
+  padding: 0 10px;
+  pointer-events: none;
+  position: absolute;
+  top: -10px;
+  transition: 0.2s;
+}
+
+.form__group_oneform__field:focus {
+  border: 1px solid #0b2447 !important;
+  outline: none;
+  box-shadow: none;
+  transform: matrix3d();
+  animation-duration: 1;
+}
+
+.form__group_oneform__field:focus ~ .form__group_oneform__label {
+  background-color: white;
+  border-right: 2px solid #0b2447;
+  border-left: 2px solid #0b2447;
+  color: #0b2447;
+  font-size: 0.9em;
+  margin-left: 10px;
+  padding: 0 10px;
+  position: absolute;
+  top: -10px;
+  transition: 0.2s;
+}
+
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .button {
+  display: inline-block;
+  padding: 12px 28px;
+  margin: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #fff;
+  background-image: linear-gradient(to bottom right, #00c6ff, #0072ff);
+  border: none;
+  border-radius: 40px;
+  box-shadow: 0px 4px 0px #0072ff;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 6px 0px #0072ff;
+}
+
+.button:active {
+  transform: translateY(0px);
+  box-shadow: none;
+  background-image: linear-gradient(to bottom right, #0072ff, #00c6ff);
+}
+
+.button:before,
+.button:after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.button:before {
+  top: -3px;
+  left: -3px;
+  border-radius: 40px;
+  border-top: 3px solid #fff;
+  border-left: 3px solid #fff;
+}
+
+.button:after {
+  bottom: -3px;
+  right: -3px;
+  border-radius: 40px;
+  border-bottom: 3px solid #fff;
+  border-right: 3px solid #fff;
+}
+.input {
+  --input-focus: #2d8cf0;
+  --font-color: #323232;
+  --font-color-sub: #666;
+  --bg-color: #fff;
+  --main-color: #323232;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color: var(--bg-color);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--font-color);
+  padding: 5px 10px;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--font-color-sub);
+  opacity: 0.8;
+}
+
+.input:focus {
+  border: 2px solid var(--input-focus);
+}
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
+</head>
+<body>
+
+    <h1>Text Encryption Project - Decryption</h1>
+    <div class="form__group_one">
+        <input
+          type="text" id="encryptedMessage"
+          class="form__group_oneform__field w-100"
+          placeholder="Enter encrypted message:"
+        />
+        <label for="name" class="form__group_oneform__label"> Input text </label>
+      </div>
+    
+    </br>
+    <label for="decryptionKey">Enter decryption key:</label>
+   
+    <input type="password" id="decryptionKey" placeholder="Password" name="text" class="input">
+
+    
+
+    <button  class="button" onclick="decryptMessage()">Decrypt</button>
+
+    <h2>Decrypted Result:</h2>
+    <p id="decryptedResult"></p>
+
+    <script>
+        function decrypt(encrypted, key) {
+    const decrypted = CryptoJS.AES.decrypt(encrypted, key).toString(CryptoJS.enc.Utf8);
+    return decrypted;
+}
+
+function updateResults(decrypted) {
+    document.getElementById("decryptedResult").innerText = `Decrypted message: ${decrypted}`;
+}
+
+function decryptMessage() {
+    const encryptedMessage = document.getElementById("encryptedMessage").value;
+    const decryptionKey = document.getElementById("decryptionKey").value;
+
+    if (!encryptedMessage || !decryptionKey) {
+        alert("Please enter both the encrypted message and decryption key.");
+        return;
+    }
+
+    const decryptedMessage = decrypt(encryptedMessage, decryptionKey);
+    updateResults(decryptedMessage);
+}
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Firebase auth</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<style>
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+
+    }
+    .alert{
+    width: 100%;
+    background: rgb(0, 255, 106);
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    display: none;
+}
+</style>
+
+<body>
+  
+   
+    <form id="MainForm" class="w-25 m-4">
+        <h1>Welcome to the Atmosoft&trade;👋</h1>
+        <h2 class="mb-3">Register User</h2>
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="emailInp" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="passwordInp" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="fnameInp" placeholder="Password">
+            <label for="floatingPassword">First Name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="lnameInp" placeholder="Password">
+            <label for="floatingPassword">Last Name</label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="float: right;">Create New User</button>
+        <a href="login.html"><button type="button" class="btn btn-primary me-2" style="float: right;">Sign
+                In</button></a>
+
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAjA9INrhrH5tmeNNIL9q4VYzcCOBYIhAg",
+            authDomain: "atom-efc4d.firebaseapp.com",
+            projectId: "atom-efc4d",
+            storageBucket: "atom-efc4d.appspot.com",
+            messagingSenderId: "395566290228",
+            appId: "1:395566290228:web:973713b8e7ee4c4e0a0161",
+            measurementId: "G-K814RYS9WB"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore();
+        const auth = getAuth(app);
+
+        let EmailInp = document.getElementById('emailInp');
+        let PassInp = document.getElementById('passwordInp');
+        let FnameInp = document.getElementById('fnameInp');
+        let LnameInp = document.getElementById('lnameInp');
+        let MainForm = document.getElementById('MainForm');
+        let RegisterUser = evt => {
+            evt.preventDefault();
+
+            createUserWithEmailAndPassword(auth, EmailInp.value, PassInp.value)
+                .then(async (credentials) => {
+                    var ref = doc(db, "UserAuthList", credentials.user.uid)
+                    await setDoc(ref, {
+                        firstname: FnameInp.value,
+                        lastname: LnameInp.value,
+                    })
+                })
+                .catch((error) => {
+                    alert(error.message);
+                    console.log(error.code);
+                    console.log(error.message);
+                })
+
+        }
+       {/*  //   enable alert
+    document.querySelector(".alert").style.display = "block";
+
+//   remove the alert
+setTimeout(() => {
+    document.querySelector(".alert").style.display = "none";
+}, 3000);
+
+//   reset the form
+document.getElementById("contactForm").reset();
+*/} 
+        MainForm.addEventListener('submit', RegisterUser);
+    </script>
+</body>
+
+</html>
